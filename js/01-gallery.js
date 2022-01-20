@@ -4,21 +4,27 @@ import { galleryItems } from './gallery-items.js';
 console.log(galleryItems);
 const galleryEl = document.querySelector(".gallery");
 const galleryMarup = galleryItems.map(({ preview, original, description }) => {
-    return `<a class="gallery__link" href=${original}>
+  return `<div class="gallery__item">
+    <a class="gallery__link" href=${original}>
     <img
       class="gallery__image"
       src=${preview}
       data-source=${original}
       alt=${description}
     />
-  </a>`
+  </a>
+  </div>`
 }).join("");
 
 const galleryHandler = (event) => {
-    if (!event.target.dataset === sourse) return;
-    event.stopPropagation();
-    const originalUrl = event.target.dataset.source;
-    console.log(originalUrl)
+  event.preventDefault(); 
+  if (event.target.nodeName !== "IMG") return;
+   const originalUrl = event.target.dataset.source;
+ 
+  const instance = basicLightbox.create(`
+            <img src=${originalUrl} >
+    `)
+  instance.show();  
 };
 
 galleryEl.insertAdjacentHTML("afterbegin", galleryMarup);
